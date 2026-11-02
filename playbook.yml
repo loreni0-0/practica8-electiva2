@@ -1,0 +1,63 @@
+---
+- name: "Práctica 8 - Automatización de Servidores con Ansible"
+  hosts: servidores
+  become: yes
+  tasks:
+    - name: 1. Actualizar caché de APT del sistema operativo
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: 2. Crear el usuario 'itla' en cada servidor
+      user:
+        name: itla
+        state: present
+        shell: /bin/bash
+        create_home: yes
+
+    - name: 3. Crear la carpeta 'app' en la raíz del servidor (/app)
+      file:
+        path: /app
+        state: directory
+        mode: '0755'
+        owner: itla
+        group: itla
+
+    - name: 4. Crear el archivo hola.txt en la carpeta app (/app/hola.txt)
+      copy:
+        dest: /app/hola.txt
+        content: |
+          =======================================================
+          ¡Hola Mundo desde Ansible!
+          Servidor: {{ inventory_hostname }}
+          Dirección IP / Host: {{ ansible_host }}
+          Usuario propietario: itla
+          Fecha de configuración: {{ ansible_date_time.date }} {{ ansible_date_time.time }}
+          Estado: Automatización completada satisfactoriamente
+          =======================================================
+        mode: '0644'
+        owner: itla
+        group: itla
+
+    - name: 5. Instalar las aplicaciones cowsay y htop en cada servidor
+      apt:
+        name:
+          - cowsay
+          - htop
+        state: present
+
+    - name: Asegurar que cowsay sea accesible en /usr/local/bin
+      file:
+        src: /usr/games/cowsay
+        dest: /usr/local/bin/cowsay
+        state: link
+        force: yes
+
+    - name: 6. Verificación - Ejecutar cowsay con mensaje de éxito
+      command: cowsay "Servidor {{ inventory_hostname }} configurado exitosamente por Ansible!"
+      register: cowsay_output
+      changed_when: false
+
+    - name: 7. Mostrar mensaje de verificación en la salida de Ansible
+      debug:
+        msg: "{{ cowsay_output.stdout_lines }}"

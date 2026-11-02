@@ -1,0 +1,93 @@
+services:
+  # Servidor Ubuntu 1
+  server1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: server1
+    hostname: server1
+    restart: always
+    ports:
+      - "2201:22"
+    networks:
+      ansible_net:
+        ipv4_address: 172.20.0.11
+
+  # Servidor Ubuntu 2
+  server2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: server2
+    hostname: server2
+    restart: always
+    ports:
+      - "2202:22"
+    networks:
+      ansible_net:
+        ipv4_address: 172.20.0.12
+
+  # Servidor Ubuntu 3
+  server3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: server3
+    hostname: server3
+    restart: always
+    ports:
+      - "2203:22"
+    networks:
+      ansible_net:
+        ipv4_address: 172.20.0.13
+
+  # Servidor Ubuntu 4
+  server4:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: server4
+    hostname: server4
+    restart: always
+    ports:
+      - "2204:22"
+    networks:
+      ansible_net:
+        ipv4_address: 172.20.0.14
+
+  # Servidor Ubuntu 5
+  server5:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: server5
+    hostname: server5
+    restart: always
+    ports:
+      - "2205:22"
+    networks:
+      ansible_net:
+        ipv4_address: 172.20.0.15
+
+  # (Opcional) Nodo controlador de Ansible en contenedor
+  # Permite ejecutar Ansible directamente con Docker sin requerir WSL
+  # Uso: docker compose run --rm ansible-controller
+  ansible-controller:
+    image: cytopia/ansible:latest
+    container_name: ansible_controller
+    profiles:
+      - tools
+    volumes:
+      - ./:/data
+    working_dir: /data
+    networks:
+      ansible_net:
+        ipv4_address: 172.20.0.100
+
+networks:
+  ansible_net:
+    name: ansible_net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

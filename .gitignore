@@ -1,0 +1,17 @@
+# Ansible
+*.retry
+.retry
+*.log
+.ansible/
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Sistema Operativo y Editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
