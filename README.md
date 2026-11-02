@@ -177,19 +177,4 @@ docker compose down
 
 ---
 
-## 📤 Instrucciones para Vincular y Subir a GitHub
 
-El repositorio Git ya se encuentra inicializado con la rama `main` y el commit de todos los archivos listo.
-
-Para subirlo a tu cuenta de GitHub:
-
-1. Crea un repositorio nuevo en blanco en [GitHub](https://github.com/new) (por ejemplo: `practica8-electiva2`).
-2. En la terminal dentro de esta carpeta, vincula tu repositorio remoto:
-   ```bash
-   git remote add origin https://github.com/<TU_USUARIO>/practica8-electiva2.git
-   ```
-3. Sube los cambios:
-   ```bash
-   git push -u origin main
-   ```
-4. Pega la URL del repositorio de GitHub en la entrega de la práctica.
